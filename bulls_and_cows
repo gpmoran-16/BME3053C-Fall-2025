@@ -1,0 +1,144 @@
+# Copy your code from part3.py into this file. Then, make modifications as needed for Section 4.
+
+#welcome message function
+def welcome_message():
+  print('Welcome to Bulls and Cows!')
+welcome_message()
+
+
+#get secret code function
+import random
+def get_secret_code():
+  print('Type \'1\' if you would like the computer to generate a secret code or \'2\' if you want to input it yourself:')
+  ask_code=input()
+  if ask_code == '2':
+    while True:
+      print('Type in the secret code:')
+      secret_code = input()
+      if not (secret_code.isdigit() and len(secret_code) == 4):
+        print('There was a problem processing your input. Please type exactly four unique digits.')
+        continue
+      secret_code= list(secret_code)
+      if secret_code.count('0') > 1 or secret_code.count('1') > 1 or secret_code.count('2') > 1 or secret_code.count(
+              '3') > 1 or secret_code.count('4') > 1 or secret_code.count('5') > 1 or secret_code.count(
+        '6') > 1 or secret_code.count('7') > 1 or secret_code.count('8') > 1 or secret_code.count('9') > 1:
+        print('There was a problem processing your input. Please type exactly four unique digits.')
+        continue
+      else:
+        break
+  if ask_code == '1':
+    seed_val = int(input("Please enter a seed:\n"))
+    random.seed(seed_val)
+    secret_code = []
+    while len(secret_code) != 4:
+      random_val = random.randint(0, 9)
+      if random_val not in secret_code:
+        secret_code.append(str(random_val))
+    while True:
+      if secret_code.count('0') > 1 or secret_code.count('1') > 1 or secret_code.count('2') > 1 or secret_code.count(
+              '3') > 1 or secret_code.count('4') > 1 or secret_code.count('5') > 1 or secret_code.count(
+        '6') > 1 or secret_code.count('7') > 1 or secret_code.count('8') > 1 or secret_code.count('9') > 1:
+        seed_val = int(input("Please enter a different seed:\n"))
+        random.seed(seed_val)
+        secret_code = []
+        while len(secret_code) != 4:
+          random_val = random.randint(0, 9)
+          if random_val not in secret_code:
+            secret_code.append(str(random_val))
+        continue
+      else:
+        break
+  return secret_code
+
+
+#get difficulty function
+def get_difficulty():
+  print('Choose a difficulty level:')
+  print('1. Easy (12 guesses)')
+  print('2. Medium (8 guesses)')
+  print('3. Hard (5 guesses)')
+  difficulty=input()
+  if difficulty.isdigit():
+    difficulty = int(difficulty)
+  while difficulty not in (1,2,3):
+    print('There was a problem processing your input. Please type 1, 2, or 3.')
+    print('Choose a difficulty level:')
+    print('1. Easy (12 guesses)')
+    print('2. Medium (8 guesses)')
+    print('3. Hard (5 guesses)')
+    difficulty=int(input())
+  if difficulty==1:
+    guess_left=12
+  if difficulty==2:
+    guess_left=8
+  if difficulty==3:
+    guess_left=5
+  return int(guess_left)
+
+#get guess function
+def get_guess():
+  while True:
+    print('Guess the code (type \'give up\' if you would like to quit the game):')
+    guess = input()
+    if guess == "give up":
+      guess_list = guess
+      break
+    if not(guess.isdigit() and len(guess) == 4):
+      print('There was a problem processing your input. Please type exactly four unique digits.')
+      continue
+    guess_list = list(guess)
+    if guess_list.count('0') > 1 or guess_list.count('1')>1 or guess_list.count('2')>1 or guess_list.count('3')>1 or guess_list.count('4')>1 or guess_list.count('5')>1 or guess_list.count('6')>1 or guess_list.count('7')>1 or guess_list.count('8')>1 or guess_list.count('9')>1:
+      print('There was a problem processing your input. Please type exactly four unique digits.')
+      continue
+    else:
+      break
+  return guess_list
+
+
+#play game function
+def play_game():
+  secret_code = get_secret_code()
+  guess_left = get_difficulty()
+  while True:
+    guess_list = get_guess()
+    check_give_up = str(guess_list)
+    if check_give_up == "give up" :
+      break
+    bulls=0
+    cows=0
+    if guess_list[0]==secret_code[0]:
+      bulls+=1
+    if guess_list[1]==secret_code[1]:
+      bulls+=1
+    if guess_list[2]==secret_code[2]:
+      bulls+=1
+    if guess_list[3]==secret_code[3]:
+      bulls+=1
+    if secret_code.count(guess_list[0])==1 and guess_list[0]!=secret_code[0]:
+      cows+=1
+    if secret_code.count(guess_list[1])==1 and guess_list[1]!=secret_code[1]:
+      cows += 1
+    if secret_code.count(guess_list[2])==1 and guess_list[2]!=secret_code[2]:
+      cows+=1
+    if secret_code.count(guess_list[3])==1 and guess_list[3]!=secret_code[3]:
+      cows+=1
+    if bulls == 4:
+      print('You win!')
+      break
+    print(f"Bulls: {bulls}")
+    print(f"Cows: {cows}")
+    guess_left-=1
+    print(f"You have {guess_left} guesses left.")
+    if guess_left == 0:
+      you_lose = "".join(secret_code)
+      print(f"You lose; the correct answer was {you_lose}")
+      break
+play_again = "y"
+while True:
+  if play_again == "y":
+    play_game()
+    print("Would you like to play again? (y/n):")
+    play_again=input()
+  else:
+    break
+
