@@ -9,9 +9,3 @@ __pycache__/
 *.out
 *.pid
 *.pid.lock
-<<<<<<< HEAD
-*.lock
-=======
-*.lock
-study-guides/
->>>>>>> 10d71de (updated gitignore, added new lesson)
